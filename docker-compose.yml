@@ -1,0 +1,22 @@
+version: '2.2'
+
+services:
+
+  geoserver:
+    build: .
+    links:
+      - postgis
+    ports:
+      - "8080:8080"
+    volumes:
+        - geoserver_data_dir:/opt/geoserver_data
+
+  postgis:
+    image: postgis/postgis:13-3.1-alpine
+    volumes:
+        - postgres_data_dir:/var/lib/postgresql/data
+
+
+volumes:
+    geoserver_data_dir:
+    postgres_data_dir:
