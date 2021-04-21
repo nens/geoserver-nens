@@ -13,6 +13,8 @@ services:
 
   postgis:
     image: postgis/postgis:13-3.1-alpine
+    ports:
+      - "55432:5432"
     volumes:
         - postgres_data_dir:/var/lib/postgresql/data
 
