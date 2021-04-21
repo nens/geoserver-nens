@@ -42,7 +42,10 @@ RUN rm jai_core-*jar jai_imageio-*.jar jai_codec-*.jar
 RUN curl -jkSL -o $CATALINA_HOME/lib/marlin.jar https://github.com/bourgesl/marlin-renderer/releases/download/v$MARLIN_TAG/marlin-$MARLIN_VERSION-Unsafe.jar && \
     curl -jkSL -o $CATALINA_HOME/lib/marlin-sun-java2d.jar https://github.com/bourgesl/marlin-renderer/releases/download/v$MARLIN_TAG/marlin-$MARLIN_VERSION-Unsafe-sun-java2d.jar
 
-# Copy default data dir.
+# Copy default data dir to our data dir location, this way the volume gets populated with it.
 RUN cp -r $CATALINA_HOME/webapps/geoserver/data $GEOSERVER_DATA_DIR
+RUN mkdir -p $CATALINA_HOME/webapps/ROOT
+COPY html/index.html $CATALINA_HOME/webapps/ROOT/
+
 
 #ENTRYPOINT [ "$CATALINA_HOME/bin/catalina.sh", "run" ]
