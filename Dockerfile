@@ -21,7 +21,6 @@ RUN curl -jkSL -o /tmp/geoserver.zip http://downloads.sourceforge.net/project/ge
     unzip -q $CATALINA_HOME/webapps/geoserver.war -d $CATALINA_HOME/webapps/geoserver && \
     rm $CATALINA_HOME/webapps/geoserver.war /tmp/geoserver.zip && \
     mkdir -p $GEOSERVER_DATA_DIR
-# TODO: copy libs to  GEOSEVER_LIB_DIR
 
 # Install java advanced imaging.
 WORKDIR /tmp
@@ -32,7 +31,8 @@ RUN wget https://download.java.net/media/jai/builds/release/1_1_3/jai-1_1_3-lib-
     mv /tmp/jai-1_1_3/lib/*.jar $JAVA_HOME/jre/lib/ext/ && \
     mv /tmp/jai-1_1_3/lib/*.so $JAVA_HOME/jre/lib/amd64/ && \
     mv /tmp/jai_imageio-1_1/lib/*.jar $JAVA_HOME/jre/lib/ext/ && \
-    mv /tmp/jai_imageio-1_1/lib/*.so $JAVA_HOME/jre/lib/amd64/
+    mv /tmp/jai_imageio-1_1/lib/*.so $JAVA_HOME/jre/lib/amd64/ && \
+    rm -rf /tmp/jai*
 # uninstall JAI default installation from geoserver to avoid classpath conflicts
 # see http://docs.geoserver.org/latest/en/user/production/java.html#install-native-jai-and-imageio-extensions
 WORKDIR $GEOSERVER_LIB_DIR
@@ -42,10 +42,18 @@ RUN rm jai_core-*jar jai_imageio-*.jar jai_codec-*.jar
 RUN curl -jkSL -o $CATALINA_HOME/lib/marlin.jar https://github.com/bourgesl/marlin-renderer/releases/download/v$MARLIN_TAG/marlin-$MARLIN_VERSION-Unsafe.jar && \
     curl -jkSL -o $CATALINA_HOME/lib/marlin-sun-java2d.jar https://github.com/bourgesl/marlin-renderer/releases/download/v$MARLIN_TAG/marlin-$MARLIN_VERSION-Unsafe-sun-java2d.jar
 
+# Download libs to GEOSEVER_LIB_DIR
+WORKDIR /tmp
+RUN curl -jkSL -o control-flow-plugin.zip http://downloads.sourceforge.net/project/geoserver/GeoServer/$GEOSERVER_VERSION/extensions/geoserver-$GEOSERVER_VERSION-control-flow-plugin.zip && \
+    curl -jkSL -o csw-plugin.zip http://downloads.sourceforge.net/project/geoserver/GeoServer/$GEOSERVER_VERSION/extensions/geoserver-$GEOSERVER_VERSION-csw-plugin.zip && \
+    unzip -n '*plugin.zip' && \
+    mv *.jar ${GEOSERVER_LIB_DIR} && \
+    rm *.zip
+    
 # Copy default data dir to our data dir location, this way the volume gets populated with it.
 RUN cp -r $CATALINA_HOME/webapps/geoserver/data $GEOSERVER_DATA_DIR
 RUN mkdir -p $CATALINA_HOME/webapps/ROOT
 COPY html/index.html $CATALINA_HOME/webapps/ROOT/
 
 
-#ENTRYPOINT [ "$CATALINA_HOME/bin/catalina.sh", "run" ]
+WORKDIR ${GEOSERVER_DATA_DIR}
