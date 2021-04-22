@@ -1,0 +1,24 @@
+# TODO
+---
+- hosts:
+    - production
+  remote_user: buildout
+
+  tasks:
+
+    - name: "Checkout correct version from github"
+      git:
+        accept_hostkey: yes
+        dest: /srv/{{ project_name }}
+        repo: ssh://git@github.com/nens/geoserver-nens.git
+        version: "{{ checkout_name }}"
+
+    - name: "Build docker"
+      shell:
+        cmd: "docker-compose build"
+        chdir: /srv/{{ project_name }}
+
+    - name: "Start docker"
+      shell:
+        cmd: "docker-compose up -d"
+        chdir: /srv/{{ project_name }}
