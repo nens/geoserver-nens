@@ -15,7 +15,7 @@ services:
     image: postgis/postgis:13-3.1-alpine
     environment: 
       POSTGRES_USER: geoserver
-      POSTGRES_PASSWORD: geoserver
+      POSTGRES_PASSWORD: diID-384df
     ports:
       - "5432:5432"
     volumes:
