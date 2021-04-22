@@ -19,3 +19,4 @@ Postgres: username ``geoserver``, database ``geoserver``. Password is in the doc
 
 Geoserver: user ``admin``, password ``geoserver`` for now. TODO: add oauth2/cognito login support.
 
+One-time manual step on the server: tell docker to use ``/mnt/data/docker`` instead of ``/var/lib/docker`` (see https://www.guguweb.com/2019/02/07/how-to-move-docker-data-directory-to-another-location-on-ubuntu/).
