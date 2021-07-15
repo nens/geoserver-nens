@@ -8,15 +8,21 @@ Docker setup for the geoservers we run at `Nelen & Schuurmans
 Current test server
 -------------------
 
-It ought to move to a kubernetes cluster with some automatic scaling at the end, but for now....
+It ought to move to a kubernetes cluster with some automatic scaling at the
+end, but for now....
 
 https://geoserver-test.lizard.net
 
-Installed on p-liz-geo-atlas-01.external-nens.local with docker-compose. Tomcat on ``8080``, postgres (in docker) on ``5432``.
-Todo: arrange access to postgres.
+Installed on p-liz-geo-atlas-01.external-nens.local with
+docker-compose. Tomcat on ``8080``, postgres (in docker) on ``5432``.  Todo:
+arrange access to postgres.
 
-Postgres: username ``geoserver``, database ``geoserver``. Password is in the docker-compose...
+Postgres: username ``geoserver``, database ``geoserver``. Password is in the
+docker-compose...
 
-Geoserver: user ``admin``, password ``geoserver`` for now. TODO: add oauth2/cognito login support.
+Geoserver: user ``admin``, password ``geoserver`` for now. TODO: add
+oauth2/cognito login support.
 
-One-time manual step on the server: tell docker to use ``/mnt/data/docker`` instead of ``/var/lib/docker`` (see https://www.guguweb.com/2019/02/07/how-to-move-docker-data-directory-to-another-location-on-ubuntu/).
+One-time manual step on the server: tell docker to use ``/mnt/data/docker``
+instead of ``/var/lib/docker`` (see
+https://www.guguweb.com/2019/02/07/how-to-move-docker-data-directory-to-another-location-on-ubuntu/).
