@@ -1,7 +1,7 @@
 # TODO
 ---
 - hosts:
-    - production
+    - all
   remote_user: buildout
 
   tasks:

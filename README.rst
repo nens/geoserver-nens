@@ -4,9 +4,16 @@ Geoserver with N&S defaults
 Docker setup for the geoservers we run at `Nelen & Schuurmans
 <https://www.nelen-schuurmans.nl>`_.
 
+We need two
 
-Current test server
--------------------
+- An internal server (without external web access) *with* internal :5432
+  access for easy uploading
+
+- One or more regular external geoservers
+
+
+Current test external server
+----------------------------
 
 It ought to move to a kubernetes cluster with some automatic scaling at the
 end, but for now....
