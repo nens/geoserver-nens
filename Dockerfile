@@ -1,7 +1,7 @@
 # Lots of inspiration from https://github.com/terrestris/docker-geoserve
 
 # Tomcat 10 isn't yet supported by geoserver.
-FROM tomcat:9-jdk8
+FROM --platform=linux/amd64 tomcat:9-jdk8
 
 ENV GEOSERVER_VERSION="2.19.0"
 ENV GEOSERVER_DATA_DIR="/opt/geoserver_data/"
