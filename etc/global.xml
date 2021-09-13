@@ -1,4 +1,5 @@
 <global>
+  <!-- Note: settings that are different from the default have comments -->
   <settings>
     <id>SettingsInfoImpl-68f6c583:154ca420c47:-8000</id>
     <contact>
@@ -16,7 +17,9 @@
     <verbose>false</verbose>
     <verboseExceptions>false</verboseExceptions>
     <localWorkspaceIncludesPrefix>false</localWorkspaceIncludesPrefix>
-    <proxyBaseUrl>https://geoserver-dev.staging.lizard.net/geoserver</proxyBaseUrl>
+    <!-- proxyBaseUrl is set to recognize 'https' and the domain name
+	 automatically -->
+    <proxyBaseUrl>${X-Forwarded-Proto}://${X-Forwarded-Host}/geoserver</proxyBaseUrl>
   </settings>
   <jai>
     <allowInterpolation>false</allowInterpolation>
@@ -42,4 +45,6 @@
   <featureTypeCacheSize>0</featureTypeCacheSize>
   <globalServices>true</globalServices>
   <xmlPostRequestLogBufferSize>1024</xmlPostRequestLogBufferSize>
+  <!-- Support auto-host-and-protocol recognition for proxyBaseUrl -->
+  <useHeadersProxyURL>true</useHeadersProxyURL>
 </global>
