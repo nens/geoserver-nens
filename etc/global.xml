@@ -16,6 +16,7 @@
     <verbose>false</verbose>
     <verboseExceptions>false</verboseExceptions>
     <localWorkspaceIncludesPrefix>false</localWorkspaceIncludesPrefix>
+    <proxyBaseUrl>https://geoserver-dev.staging.lizard.net/geoserver</proxyBaseUrl>
   </settings>
   <jai>
     <allowInterpolation>false</allowInterpolation>
