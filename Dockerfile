@@ -50,11 +50,14 @@ RUN curl -jkSL -o control-flow-plugin.zip http://downloads.sourceforge.net/proje
     mv *.jar ${GEOSERVER_LIB_DIR} && \
     rm *.zip
 
-# Copy default data dir to our data dir location, this way the volume gets populated with it.
-RUN cp -r $CATALINA_HOME/webapps/geoserver/data/* $GEOSERVER_DATA_DIR
-# Add index and robot file
+# Add index and robot file.
 RUN mkdir -p $CATALINA_HOME/webapps/ROOT
 COPY html/* $CATALINA_HOME/webapps/ROOT/
+# Add config file.
+COPY etc/global.xml $CATALINA_HOME/webapps/geoserver/data/
+COPY copy-config-to-data-dir.sh /usr/local/bin/
 
+# Copy default data dir to our data dir location, this way the volume gets populated with it.
+RUN cp -r $CATALINA_HOME/webapps/geoserver/data/* $GEOSERVER_DATA_DIR
 
 WORKDIR ${GEOSERVER_DATA_DIR}

@@ -18,6 +18,11 @@
         cmd: "docker-compose build"
         chdir: /srv/{{ project_name }}
 
+    - name: "Update config file(s)"
+      shell:
+        cmd: "docker-compose run --rm geoserver copy-config-to-data-dir.sh"
+        chdir: /srv/{{ project_name }}
+
     - name: "Start docker"
       shell:
         cmd: "docker-compose up -d"
