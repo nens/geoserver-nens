@@ -50,6 +50,16 @@ RUN curl -jkSL -o control-flow-plugin.zip http://downloads.sourceforge.net/proje
     mv *.jar ${GEOSERVER_LIB_DIR} && \
     rm *.zip
 
+# Tell tomcat to actually listen to X-Forwarded-Proto. See
+# https://github.com/docker-library/tomcat/issues/107#issuecomment-639034758
+RUN sed -i 's|\
+  </Host>|\
+    <Valve className="org.apache.catalina.valves.RemoteIpValve" \
+      remoteIpHeader="X-Forwarded-For" \
+      protocolHeader="X-Forwarded-Proto"/>\
+  </Host>|' \
+  /usr/local/tomcat/conf/server.xml
+
 # Add index and robot file.
 RUN mkdir -p $CATALINA_HOME/webapps/ROOT
 COPY html/* $CATALINA_HOME/webapps/ROOT/
