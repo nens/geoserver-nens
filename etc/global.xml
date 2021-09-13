@@ -3,13 +3,14 @@
   <settings>
     <id>SettingsInfoImpl-68f6c583:154ca420c47:-8000</id>
     <contact>
-      <addressCity>Alexandria</addressCity>
-      <addressCountry>Egypt</addressCountry>
+      <!-- Adjusted the contact info -->
+      <addressCity>Utrecht</addressCity>
+      <addressCountry>The Netherlands</addressCountry>
       <addressType>Work</addressType>
-      <contactEmail>claudius.ptolomaeus@gmail.com</contactEmail>
-      <contactOrganization>The Ancient Geographers</contactOrganization>
-      <contactPerson>Claudius Ptolomaeus</contactPerson>
-      <contactPosition>Chief Geographer</contactPosition>
+      <contactEmail>helpdesk@nelen-schuurmans.nl</contactEmail>
+      <contactOrganization>Nelen &amp; Schuurmans</contactOrganization>
+      <contactPerson>Helpdesk</contactPerson>
+      <contactPosition>Helpdesk</contactPosition>
     </contact>
     <charset>UTF-8</charset>
     <numDecimals>8</numDecimals>
