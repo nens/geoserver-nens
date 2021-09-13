@@ -1,5 +1,8 @@
 <global>
   <!-- Note: settings that are different from the default have comments -->
+  <!-- This file is copied to the default data dir when creating the
+       Docker. When the data dir is already there, you must run the
+       copy-config-to-data-dir.sh script. See the README. -->
   <settings>
     <id>SettingsInfoImpl-68f6c583:154ca420c47:-8000</id>
     <contact>
