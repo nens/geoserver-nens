@@ -33,3 +33,5 @@ oauth2/cognito login support.
 One-time manual step on the server: tell docker to use ``/mnt/data/docker``
 instead of ``/var/lib/docker`` (see
 https://www.guguweb.com/2019/02/07/how-to-move-docker-data-directory-to-another-location-on-ubuntu/).
+
+And the internal/utrecht one: geoserver-dev.staging.lizard.net
