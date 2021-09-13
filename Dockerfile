@@ -1,7 +1,7 @@
 # Lots of inspiration from https://github.com/terrestris/docker-geoserve
 
 # Tomcat 10 isn't yet supported by geoserver.
-FROM tomcat:9-jdk8
+FROM --platform=linux/amd64 tomcat:9-jdk8
 
 ENV GEOSERVER_VERSION="2.19.0"
 ENV GEOSERVER_DATA_DIR="/opt/geoserver_data/"
@@ -49,12 +49,25 @@ RUN curl -jkSL -o control-flow-plugin.zip http://downloads.sourceforge.net/proje
     unzip -n '*plugin.zip' && \
     mv *.jar ${GEOSERVER_LIB_DIR} && \
     rm *.zip
-    
-# Copy default data dir to our data dir location, this way the volume gets populated with it.
-RUN cp -r $CATALINA_HOME/webapps/geoserver/data $GEOSERVER_DATA_DIR
-# Add index and robot file
+
+# Tell tomcat to actually listen to X-Forwarded-Proto. See
+# https://github.com/docker-library/tomcat/issues/107#issuecomment-639034758
+RUN sed -i 's|\
+  </Host>|\
+    <Valve className="org.apache.catalina.valves.RemoteIpValve" \
+      remoteIpHeader="X-Forwarded-For" \
+      protocolHeader="X-Forwarded-Proto"/>\
+  </Host>|' \
+  /usr/local/tomcat/conf/server.xml
+
+# Add index and robot file.
 RUN mkdir -p $CATALINA_HOME/webapps/ROOT
 COPY html/* $CATALINA_HOME/webapps/ROOT/
+# Add config file.
+COPY etc/global.xml $CATALINA_HOME/webapps/geoserver/data/
+COPY copy-config-to-data-dir.sh /usr/local/bin/
 
+# Copy default data dir to our data dir location, this way the volume gets populated with it.
+RUN cp -r $CATALINA_HOME/webapps/geoserver/data/* $GEOSERVER_DATA_DIR
 
 WORKDIR ${GEOSERVER_DATA_DIR}

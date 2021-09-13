@@ -1,6 +1,0 @@
-[production]
-p-liz-geo-atlas-01.external-nens.local
-
-[production:vars]
-project_name = geoserver-test.lizard.net
-checkout_name = main
