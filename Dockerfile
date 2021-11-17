@@ -1,19 +1,28 @@
 # Lots of inspiration from https://github.com/terrestris/docker-geoserver
 
 # Tomcat 10 isn't yet supported by geoserver.
-FROM --platform=linux/amd64 tomcat:9-jdk8
+FROM --platform=linux/amd64 tomcat:9-jre11-openjdk-slim
 
-ENV GEOSERVER_VERSION="2.19.0"
+ENV GEOSERVER_VERSION="2.20.0"
 ENV GEOSERVER_DATA_DIR="/opt/geoserver_data/"
-ENV MARLIN_TAG=0_9_3
-ENV MARLIN_VERSION=0.9.3
+ENV MARLIN_TAG=0_9_4_3
+ENV MARLIN_VERSION=0.9.4.3
 ENV GEOSERVER_LIB_DIR=$CATALINA_HOME/webapps/geoserver/WEB-INF/lib/
 
 # see http://docs.geoserver.org/stable/en/user/production/container.html
-ENV CATALINA_OPTS="-Xms256m -Xmx1g -Dfile.encoding=UTF-8 -D-XX:SoftRefLRUPolicyMSPerMB=36000 -Xbootclasspath/a:$CATALINA_HOME/lib/marlin.jar -Xbootclasspath/p:$CATALINA_HOME/lib/marlin-sun-java2d.jar -Dsun.java2d.renderer=org.marlin.pisces.PiscesRenderingEngine -Dorg.geotools.coverage.jaiext.enabled=true"
+ENV CATALINA_OPTS="\$EXTRA_JAVA_OPTS \
+    -Djava.awt.headless=true -server \
+    -Dfile.encoding=UTF-8 \
+    -Djavax.servlet.request.encoding=UTF-8 \
+    -Djavax.servlet.response.encoding=UTF-8 \
+    -D-XX:SoftRefLRUPolicyMSPerMB=36000 \
+    -Xbootclasspath/a:$CATALINA_HOME/lib/marlin.jar \
+    -Xbootclasspath/a:$CATALINA_HOME/lib/marlin-sun-java2d.jar \
+    -Dsun.java2d.renderer=org.marlin.pisces.PiscesRenderingEngine \
+    -Dorg.geotools.coverage.jaiext.enabled=true"
 
 RUN apt-get update && \
-    apt-get install -y curl openssl zip gdal-bin && \
+    apt-get install -y curl openssl zip gdal-bin wget && \
     rm -rf $CATALINA_HOME/webapps/*
 RUN curl -jkSL -o /tmp/geoserver.zip http://downloads.sourceforge.net/project/geoserver/GeoServer/$GEOSERVER_VERSION/geoserver-$GEOSERVER_VERSION-war.zip && \
     unzip /tmp/geoserver.zip geoserver.war -d $CATALINA_HOME/webapps && \
@@ -28,11 +37,11 @@ RUN wget https://download.java.net/media/jai/builds/release/1_1_3/jai-1_1_3-lib-
     wget https://download.java.net/media/jai-imageio/builds/release/1.1/jai_imageio-1_1-lib-linux-amd64.tar.gz && \
     gunzip -c jai-1_1_3-lib-linux-amd64.tar.gz | tar xf - && \
     gunzip -c jai_imageio-1_1-lib-linux-amd64.tar.gz | tar xf - && \
-    mv /tmp/jai-1_1_3/lib/*.jar $JAVA_HOME/jre/lib/ext/ && \
-    mv /tmp/jai-1_1_3/lib/*.so $JAVA_HOME/jre/lib/amd64/ && \
-    mv /tmp/jai_imageio-1_1/lib/*.jar $JAVA_HOME/jre/lib/ext/ && \
-    mv /tmp/jai_imageio-1_1/lib/*.so $JAVA_HOME/jre/lib/amd64/ && \
-    rm -rf /tmp/jai*
+    mv /tmp/jai-1_1_3/lib/*.jar $CATALINA_HOME/lib/ && \
+    mv /tmp/jai-1_1_3/lib/*.so $JAVA_HOME/lib/ && \
+    mv /tmp/jai_imageio-1_1/lib/*.jar $CATALINA_HOME/lib/ && \
+    mv /tmp/jai_imageio-1_1/lib/*.so $JAVA_HOME/lib/
+
 # uninstall JAI default installation from geoserver to avoid classpath conflicts
 # see http://docs.geoserver.org/latest/en/user/production/java.html#install-native-jai-and-imageio-extensions
 WORKDIR $GEOSERVER_LIB_DIR
