@@ -1,4 +1,4 @@
-# Lots of inspiration from https://github.com/terrestris/docker-geoserve
+# Lots of inspiration from https://github.com/terrestris/docker-geoserver
 
 # Tomcat 10 isn't yet supported by geoserver.
 FROM --platform=linux/amd64 tomcat:9-jdk8
