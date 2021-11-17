@@ -42,10 +42,11 @@ RUN rm jai_core-*jar jai_imageio-*.jar jai_codec-*.jar
 RUN curl -jkSL -o $CATALINA_HOME/lib/marlin.jar https://github.com/bourgesl/marlin-renderer/releases/download/v$MARLIN_TAG/marlin-$MARLIN_VERSION-Unsafe.jar && \
     curl -jkSL -o $CATALINA_HOME/lib/marlin-sun-java2d.jar https://github.com/bourgesl/marlin-renderer/releases/download/v$MARLIN_TAG/marlin-$MARLIN_VERSION-Unsafe-sun-java2d.jar
 
-# Download libs to GEOSEVER_LIB_DIR
+# Download libs/extensions to GEOSERVER_LIB_DIR
 WORKDIR /tmp
 RUN curl -jkSL -o control-flow-plugin.zip http://downloads.sourceforge.net/project/geoserver/GeoServer/$GEOSERVER_VERSION/extensions/geoserver-$GEOSERVER_VERSION-control-flow-plugin.zip && \
     curl -jkSL -o csw-plugin.zip http://downloads.sourceforge.net/project/geoserver/GeoServer/$GEOSERVER_VERSION/extensions/geoserver-$GEOSERVER_VERSION-csw-plugin.zip && \
+    curl -jkSL -o vectortiles-plugin.zip http://downloads.sourceforge.net/project/geoserver/GeoServer/$GEOSERVER_VERSION/extensions/geoserver-$GEOSERVER_VERSION-vectortiles-plugin.zip && \
     unzip -n '*plugin.zip' && \
     mv *.jar ${GEOSERVER_LIB_DIR} && \
     rm *.zip
