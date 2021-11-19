@@ -13,3 +13,7 @@ CHANGELOG
 
 - Fixed http/https problem by using ``X-Forwarded-Proto``, including a fix for
   tomcat to actually use that header.
+
+- Upgrade to geoserver 2.20.0.
+
+- Added vectorlayer support.
