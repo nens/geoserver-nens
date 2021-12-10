@@ -1,8 +1,9 @@
 # Lots of inspiration from https://github.com/terrestris/docker-geoserver
 
 # Tomcat 10 isn't yet supported by geoserver.
-FROM --platform=linux/amd64 tomcat:9-jre11-openjdk-slim
+FROM tomcat:9-jre11-openjdk-slim
 
+ARG BUILDPLATFORM
 ENV GEOSERVER_VERSION="2.20.0"
 ENV GEOSERVER_DATA_DIR="/opt/geoserver_data/"
 ENV MARLIN_TAG=0_9_4_3
@@ -33,19 +34,20 @@ RUN curl -jkSL -o /tmp/geoserver.zip http://downloads.sourceforge.net/project/ge
 
 # Install java advanced imaging.
 WORKDIR /tmp
-RUN wget https://download.java.net/media/jai/builds/release/1_1_3/jai-1_1_3-lib-linux-amd64.tar.gz && \
+RUN if [[ -z "$BUILDPLATFORM" == "linux/arm64" ]]; then echo "Skipping JAI"; else  wget https://download.java.net/media/jai/builds/release/1_1_3/jai-1_1_3-lib-linux-amd64.tar.gz && \
     wget https://download.java.net/media/jai-imageio/builds/release/1.1/jai_imageio-1_1-lib-linux-amd64.tar.gz && \
     gunzip -c jai-1_1_3-lib-linux-amd64.tar.gz | tar xf - && \
     gunzip -c jai_imageio-1_1-lib-linux-amd64.tar.gz | tar xf - && \
     mv /tmp/jai-1_1_3/lib/*.jar $CATALINA_HOME/lib/ && \
     mv /tmp/jai-1_1_3/lib/*.so $JAVA_HOME/lib/ && \
     mv /tmp/jai_imageio-1_1/lib/*.jar $CATALINA_HOME/lib/ && \
-    mv /tmp/jai_imageio-1_1/lib/*.so $JAVA_HOME/lib/
+    mv /tmp/jai_imageio-1_1/lib/*.so $JAVA_HOME/lib/ \
+    ; fi
 
 # uninstall JAI default installation from geoserver to avoid classpath conflicts
 # see http://docs.geoserver.org/latest/en/user/production/java.html#install-native-jai-and-imageio-extensions
 WORKDIR $GEOSERVER_LIB_DIR
-RUN rm jai_core-*jar jai_imageio-*.jar jai_codec-*.jar
+RUN if [[ -z "$BUILDPLATFORM" == "linux/arm64" ]]; then echo "Skipping JAI"; else rm jai_core-*jar jai_imageio-*.jar jai_codec-*.jar ; fi
 
 # install marlin renderer
 RUN curl -jkSL -o $CATALINA_HOME/lib/marlin.jar https://github.com/bourgesl/marlin-renderer/releases/download/v$MARLIN_TAG/marlin-$MARLIN_VERSION-Unsafe.jar && \
@@ -73,8 +75,9 @@ RUN sed -i 's|\
 # Add index and robot file.
 RUN mkdir -p $CATALINA_HOME/webapps/ROOT
 COPY html/* $CATALINA_HOME/webapps/ROOT/
-# Add config file.
+# Add config files.
 COPY etc/global.xml $CATALINA_HOME/webapps/geoserver/data/
+COPY etc/web.xml $CATALINA_HOME/webapps/geoserver/WEB-INF/
 COPY copy-config-to-data-dir.sh /usr/local/bin/
 
 # Copy default data dir to our data dir location, this way the volume gets populated with it.
