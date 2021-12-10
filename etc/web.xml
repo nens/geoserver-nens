@@ -200,7 +200,10 @@
      </init-param>
      <init-param>
        <param-name>cors.allowed.methods</param-name>
-       <param-value>GET,POST,PUT,DELETE,HEAD,OPTIONS</param-value>
+       <!-- Change from default: disabled post/put/delete -->
+       <param-value>GET,HEAD,OPTIONS</param-value>
+       <!-- Default:
+	    <param-value>GET,POST,PUT,DELETE,HEAD,OPTIONS</param-value> -->
      </init-param>
      <init-param>
        <param-name>cors.allowed.headers</param-name>
