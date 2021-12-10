@@ -17,3 +17,7 @@ CHANGELOG
 - Upgrade to geoserver 2.20.0.
 
 - Added vectorlayer support.
+
+- Enabled CORS (not for post/put/delete, btw).
+
+- Added an "if" in the Dockerfile to support building/running on an M1 mac.
