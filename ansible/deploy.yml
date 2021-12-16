@@ -13,6 +13,12 @@
         repo: ssh://git@github.com/nens/geoserver-nens.git
         version: "{{ checkout_name }}"
 
+    - name: "Symlink compose config"
+      file:
+        src: "{{ compose_file }}"
+        dest: "docker-compose.yml"
+        state: link
+
     - name: "Pull dockers, when needed"
       shell:
         cmd: "docker-compose pull"
