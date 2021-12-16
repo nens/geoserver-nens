@@ -13,6 +13,11 @@
         repo: ssh://git@github.com/nens/geoserver-nens.git
         version: "{{ checkout_name }}"
 
+    - name: "Pull dockers, when needed"
+      shell:
+        cmd: "docker-compose pull"
+        chdir: /srv/{{ project_name }}
+
     - name: "Build docker"
       shell:
         cmd: "docker-compose build"
