@@ -29,10 +29,13 @@
         cmd: "docker-compose build"
         chdir: /srv/{{ project_name }}
 
-    - name: "Update config file(s)"
-      shell:
-        cmd: "docker-compose run --rm geoserver copy-config-to-data-dir.sh"
-        chdir: /srv/{{ project_name }}
+    # TODO: perhaps do this manually? The 'geoserver' name doesn't fit
+    # production. But perhaps this is something that needs to be copied to the
+    # data dir on production anyway?
+    # - name: "Update config file(s)"
+    #   shell:
+    #     cmd: "docker-compose run --rm geoserver copy-config-to-data-dir.sh"
+    #     chdir: /srv/{{ project_name }}
 
     - name: "Start docker"
       shell:
