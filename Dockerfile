@@ -20,7 +20,9 @@ ENV CATALINA_OPTS="\$EXTRA_JAVA_OPTS \
     -Xbootclasspath/a:$CATALINA_HOME/lib/marlin.jar \
     -Xbootclasspath/a:$CATALINA_HOME/lib/marlin-sun-java2d.jar \
     -Dsun.java2d.renderer=org.marlin.pisces.PiscesRenderingEngine \
-    -Dorg.geotools.coverage.jaiext.enabled=true"
+    -Dorg.geotools.coverage.jaiext.enabled=true" \
+    -Xmx4G \
+    -Xms2G
 
 RUN apt-get update && \
     apt-get install -y curl openssl zip gdal-bin wget && \
