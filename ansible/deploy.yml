@@ -15,8 +15,8 @@
 
     - name: "Symlink compose config"
       file:
-        src: "{{ compose_file }}"
-        dest: "docker-compose.yml"
+        src: /srv/{{ project_name }}/{{ compose_file }}
+        dest: /srv/{{ project_name }}/docker-compose.yml
         state: link
 
     - name: "Pull dockers, when needed"
