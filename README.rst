@@ -12,6 +12,17 @@ We need two different kinds of servers:
 - One or more regular external geoservers.
 
 
+Local development
+-----------------
+
+First a quick symlink to get the dev/staging configuration, then a "build" and
+"up"::
+
+  $ ln -s docker-compose.devstaging.yml docker-compose.yml
+  $ docker compose build
+  $ docker compose up
+
+
 Current test external server
 ----------------------------
 
@@ -43,11 +54,15 @@ postgres port 5432 access from the laptops.
 It is installed on ``p-geo-dbweb-01.external-nens.local``, so that's where the
 postgres server is located.
 
+It uses the exact same setup as the local development version.
+
 
 Installation
 ------------
 
-The regular ansible provision/deploy stuff.
+The regular ansible provision/deploy stuff. Staging and production have a
+different inventory. Both also symlink a different docker-compose config file
+to ``docker-compose.yml``.
 
 One-time manual step on the server: tell docker to use ``/mnt/data/docker``
 instead of ``/var/lib/docker`` (see
