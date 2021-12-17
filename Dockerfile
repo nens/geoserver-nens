@@ -21,6 +21,7 @@ ENV CATALINA_OPTS="\$EXTRA_JAVA_OPTS \
     -Xbootclasspath/a:$CATALINA_HOME/lib/marlin-sun-java2d.jar \
     -Dsun.java2d.renderer=org.marlin.pisces.PiscesRenderingEngine \
     -Dorg.geotools.coverage.jaiext.enabled=true \
+    -Djava.net.useSystemProxies=true \
     -Xmx4G \
     -Xms2G"
 
