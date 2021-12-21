@@ -23,17 +23,11 @@ First a quick symlink to get the dev/staging configuration, then a "build" and
   $ docker compose up
 
 
-Current test external server
-----------------------------
+Current internal staging server
+--------------------------------
 
-It ought to move to a kubernetes cluster with some automatic scaling at the
-end, but for now....
-
-https://geoserver-test.lizard.net
-
-Installed on p-liz-geo-atlas-01.external-nens.local with
-docker-compose. Tomcat on ``8080``, postgres (in docker) on ``5432``. Postgres
-access is blocked by the firewall (at least from laptops).
+The internal/utrecht one: https://geoserver-dev.staging.lizard.net . It isn't
+accessible from the outside world, so you need to be in the office or on VPN.
 
 Postgres: username ``geoserver``, database ``geoserver``. Password is in the
 docker-compose...
@@ -41,20 +35,34 @@ docker-compose...
 Geoserver: user ``admin``, password ``geoserver`` for now. TODO: add
 oauth2/cognito login support.
 
-
-Current test internal dev server
---------------------------------
-
-The internal/utrecht one: https://geoserver-dev.staging.lizard.net . It isn't
-accessible from the outside world, so you need to be in the office or on VPN.
-
-Passwords are currently the same as for the external server. This one has
-postgres port 5432 access from the laptops.
-
 It is installed on ``p-geo-dbweb-01.external-nens.local``, so that's where the
 postgres server is located.
 
 It uses the exact same setup as the local development version.
+
+
+First production server: klimaatatlas geoserver, maps1.klimaatatlas.net
+-----------------------------------------------------------------------
+
+It ought to move to a kubernetes cluster with some automatic scaling at the
+end, but for now....
+
+https://maps1.klimaatatlas.net
+
+Installed on p-liz-geo-atlas-01.external-nens.local with
+docker-compose. Tomcat on ``8080``. No included database, as the existing old
+``p-product-db-d1`` is still used, like the original klimaatatlas geoserver.
+
+It uses the existing samba share (from the old klimaatatlas geoserver) as
+geoserver data dir, see the docker-compose file.
+
+If the server needs to be restarted, as user ``buildout`` execute::
+
+  $ cd /srv/production-geoservers
+  $ docker-compose down
+  $ docker-compose up -d
+
+You can inspect the logs with ``docker-compose logs``.
 
 
 Installation
