@@ -4,10 +4,11 @@ services:
 
   klimaatatlas-geoserver:
     build: .
+    restart: unless-stopped
     ports:
       - "8080:8080"
     volumes:
-      # - /119-storage-d4/klimaatatlas-geoserver-data-dir:/opt/geoserver_data
-      - /mnt/data/reinout:/opt/geoserver_data
+      - /119-storage-d4/klimaatatlas-geoserver-data-dir:/opt/geoserver_data
+      # - /mnt/data/reinout:/opt/geoserver_data
 
 # TODO: add logfile-to-ELK docker
